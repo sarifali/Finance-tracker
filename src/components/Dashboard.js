@@ -15,6 +15,8 @@ import Loader from "./Loader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { unparse } from "papaparse";
+import CurrencyConverter from './currencyConverter';
+
 
 const Dashboard = () => {
   const [user] = useAuthState(auth);
@@ -221,64 +223,65 @@ const Dashboard = () => {
     document.body.removeChild(link);
   }
 
-  return (
-    <div className="dashboard-container">
-      <Header />
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Cards
-            currentBalance={currentBalance}
-            income={income}
-            expenses={expenses}
-            showExpenseModal={showExpenseModal}
-            showIncomeModal={showIncomeModal}
-            cardStyle={cardStyle}
-            reset={reset}
-          />
+// Dashboard.jsx
+return (
+  <div className="dashboard-container">
+    <Header />
+    {loading ? (
+      <Loader />
+    ) : (
+      <>
+        <Cards
+          currentBalance={currentBalance}
+          income={income}
+          expenses={expenses}
+          showExpenseModal={showExpenseModal}
+          showIncomeModal={showIncomeModal}
+          cardStyle={cardStyle}
+          reset={reset}
+        />
 
-          <AddExpenseModal
-            isExpenseModalVisible={isExpenseModalVisible}
-            handleExpenseCancel={handleExpenseCancel}
-            onFinish={onFinish}
-          />
-          <AddIncomeModal
-            isIncomeModalVisible={isIncomeModalVisible}
-            handleIncomeCancel={handleIncomeCancel}
-            onFinish={onFinish}
-          />
-          {transactions.length === 0 ? (
-            <NoTransactions />
-          ) : (
-            <>
-              <Row gutter={16}>
-                <Card bordered={true} style={cardStyle}>
-                  <h2>Financial Statistics</h2>
-                  <Line {...{ ...balanceConfig, data: balanceData }} />
-                </Card>
+        <AddExpenseModal
+          isExpenseModalVisible={isExpenseModalVisible}
+          handleExpenseCancel={handleExpenseCancel}
+          onFinish={onFinish}
+        />
+        <AddIncomeModal
+          isIncomeModalVisible={isIncomeModalVisible}
+          handleIncomeCancel={handleIncomeCancel}
+          onFinish={onFinish}
+        />
+        {transactions.length === 0 ? (
+          <NoTransactions />
+        ) : (
+          <Row gutter={16}>
+            <Card bordered={true} style={cardStyle}>
+              <h2>Financial Statistics</h2>
+              <Line {...{ ...balanceConfig, data: balanceData }} />
+            </Card>
 
-                <Card bordered={true} style={{ ...cardStyle, flex: 0.45 }}>
-                  <h2>Total Spending</h2>
-                  {spendingDataArray.length == 0 ? (
-                    <p>Seems like you haven't spent anything till now...</p>
-                  ) : (
-                    <Pie {...{ ...spendingConfig, data: spendingDataArray }} />
-                  )}
-                </Card>
-              </Row>
-            </>
-          )}
-          <TransactionSearch
-            transactions={transactions}
-            exportToCsv={exportToCsv}
-            fetchTransactions={fetchTransactions}
-            addTransaction={addTransaction}
-          />
-        </>
-      )}
-    </div>
-  );
-};
+            <Card bordered={true} style={{ ...cardStyle, flex: 0.45 }}>
+              <h2>Total Spending</h2>
+              {spendingDataArray.length === 0 ? (
+                <p>Seems like you haven't spent anything till now...</p>
+              ) : (
+                <Pie {...{ ...spendingConfig, data: spendingDataArray }} />
+              )}
+            </Card>
+          </Row>
+        )}
+        <TransactionSearch
+          transactions={transactions}
+          exportToCsv={exportToCsv}
+          fetchTransactions={fetchTransactions}
+          addTransaction={addTransaction}
+        />
 
+        {/* Add Currency Converter at the bottom */}
+        <CurrencyConverter />
+      </>
+    )}
+  </div>
+)
+    }
 export default Dashboard;
