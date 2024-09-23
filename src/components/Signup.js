@@ -113,7 +113,7 @@ const SignUpSignIn = () => {
         {flag ? (
           <div className="signup-signin-container">
             <h2 style={{ textAlign: "center" }}>
-              Log In on <span className="blue-text">Financely.</span>
+              Log In on <span className="blue-text">Trackly.com</span>
             </h2>
             <form onSubmit={signUpWithEmail}>
               <div className="input-wrapper">
